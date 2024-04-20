@@ -26,13 +26,24 @@ class Block(pg.sprite.Sprite):
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+class Ball(pg.sprite.Sprite):
+    def __init__(self, x, y, file):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.transform.scale(pg.image.load(file).convert_alpha(), (30, 30))
+        self.rect = self.image.get_rect(center=(x, y))
+    def draw(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
 player1 = Block(W // 2, 600, "Images/platform.png")
 player2 = Block(W // 2, 100, "Images/platform.png")
+
+Ball = Block(W // 2, H // 2, "Images/Ball.png")
 
 while True:
     screen.fill((0, 0, 0))
     player1.draw()
     player2.draw()
+    Ball.draw()
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
