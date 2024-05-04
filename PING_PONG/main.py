@@ -68,11 +68,11 @@ while True:
                 pressedD2 = False
     if pressedA1 == True and player1.rect.x >= 10:
         player1.rect.x -= speed
-    elif pressedD1 == True and player1.rect.x + 100 <= 990:
+    elif pressedD1 == True and player1.rect.x + 100 <= W-10:
         player1.rect.x += speed
     if pressedA2 == True and player2.rect.x >= 10:
         player2.rect.x -= speed
-    elif pressedD2 == True and player2.rect.x + 100 <= 990:
+    elif pressedD2 == True and player2.rect.x + 100 <= W-10:
         player2.rect.x += speed
 
     pg.display.update()
