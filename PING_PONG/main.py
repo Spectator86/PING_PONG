@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import random as rand
 
 W,H = 1000, 700
 
@@ -18,7 +19,7 @@ pressedD2 = False
 
 speed = 15
 
-class Block(pg.sprite.Sprite):
+class GameSprite(pg.sprite.Sprite):
     def __init__(self, x, y, file):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load(file).convert_alpha()
@@ -26,18 +27,22 @@ class Block(pg.sprite.Sprite):
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-class Ball(pg.sprite.Sprite):
-    def __init__(self, x, y, file):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.transform.scale(pg.image.load(file).convert_alpha(), (30, 30))
-        self.rect = self.image.get_rect(center=(x, y))
-    def draw(self):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+player1 = GameSprite(W // 2, 600, "Images/platform.png")
+player2 = GameSprite(W // 2, 100, "Images/platform.png")
 
-player1 = Block(W // 2, 600, "Images/platform.png")
-player2 = Block(W // 2, 100, "Images/platform.png")
+Ball = GameSprite(W // 2, H // 2, "Images/Ball.png")
 
-Ball = Block(W // 2, H // 2, "Images/Ball.png")
+speedX = rand.randint(-5, 5)
+speedY = rand.randint(-5, 5)
+
+font1 = pg.font.Font(None, 35)
+
+lose1 = font1.render("PLAYER 1 (TOP) IS LOSER!", True, (255, 255, 255))
+lose2 = font1.render("PLAYER 2 (BOTTOM) IS LOSER!", True, (255, 255, 255))
+
+finish = False
+
+limit = 10
 
 while True:
     screen.fill((0, 0, 0))
@@ -48,7 +53,7 @@ while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             sys.exit()
-        if event.type == pg.KEYDOWN:
+        if event.type == pg.KEYDOWN and finish != True:
             if event.key == pg.K_a:
                 pressedA1 = True
             elif event.key == pg.K_d:
@@ -57,7 +62,7 @@ while True:
                 pressedA2 = True
             elif event.key == pg.K_RIGHT:
                 pressedD2 = True
-        elif event.type == pg.KEYUP:
+        elif event.type == pg.KEYUP and finish != True:
             if event.key == pg.K_a:
                 pressedA1 = False
             elif event.key == pg.K_d:
@@ -74,6 +79,37 @@ while True:
         player2.rect.x -= speed
     elif pressedD2 == True and player2.rect.x + 100 <= W-10:
         player2.rect.x += speed
+
+    if Ball.rect.x + 30 >= W:
+        speedX *= -1
+        if speedX <= limit and speedX > 0:
+            speedX += 1
+        if speedX <= limit and speedX < 0:
+            speedX -= 1
+
+    elif Ball.rect.x <= 0:
+        speedX *= -1
+        if speedX <= limit and speedX > 0:
+            speedX += 1
+        if speedX <= limit and speedX < 0:
+            speedX -= 1
+
+    if pg.sprite.collide_rect(player1, Ball) or pg.sprite.collide_rect(player2, Ball):
+        speedY *= -1
+        #if speedY <= limit and speedX > 0:
+            #speedY += 1
+        #if speedY <= limit and speedX < 0:
+            #speedY -= 1
+    
+    Ball.rect.x += speedX
+    Ball.rect.y += speedY
+
+    if Ball.rect.y + 30 < 0:
+        screen.blit(lose1, (100, H // 2))
+        finish = True
+    elif Ball.rect.y + 30 > H:
+        screen.blit(lose2, (500, H // 2))
+        finish = True
 
     pg.display.update()
     clock.tick(FPS)
