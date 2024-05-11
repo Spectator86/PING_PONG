@@ -34,8 +34,10 @@ player2 = GameSprite(W // 2, 600, "Images/platform.png")
 
 Ball = GameSprite(W // 2, H // 2, "Images/Ball.png")
 
-speedX = rand.randint(-5, 5)
-speedY = rand.randint(-5, 5)
+speeds = [3,-3]
+
+speedX = rand.choice(speeds)
+speedY = rand.choice(speeds)
 
 font1 = pg.font.Font(None, 35)
 
@@ -44,7 +46,7 @@ lose2 = font1.render("PLAYER (BOTTOM) IS LOSER!", True, (255, 255, 255))
 
 finish = False
 
-limit = 20
+limit = 50
 
 delay_end = False
 count = 0
@@ -69,6 +71,7 @@ while True:
             elif event.key == pg.K_RIGHT:
                 pressedD2 = False
     bot.rect.x = Ball.rect.x - 35
+    #player2.rect.x = Ball.rect.x - 35
     if pressedA2 == True and player2.rect.x >= 10:
         player2.rect.x -= speed
     elif pressedD2 == True and player2.rect.x + 100 <= W-10:
@@ -76,20 +79,17 @@ while True:
 
     if Ball.rect.x + 30 >= W:
         speedX *= -1
-        if speedX <= limit and speedX > 0:
-            speedX += 1
-        if speedX <= limit and speedX < 0:
-            speedX -= 1
 
     elif Ball.rect.x <= 0:
         speedX *= -1
-        if speedX <= limit and speedX > 0:
-            speedX += 1
-        if speedX <= limit and speedX < 0:
-            speedX -= 1
 
     if pg.sprite.collide_rect(bot, Ball) or pg.sprite.collide_rect(player2, Ball):
-        speedY *= -1
+        if speedY > 0 and speedY < limit:
+            speedY *= -1.1
+        elif speedY < 0 and speedY > -limit:
+            speedY *= -1.1
+        else:
+            speedY *= -1
         #if speedY <= limit and speedX > 0:
             #speedY += 1
         #if speedY <= limit and speedX < 0:
