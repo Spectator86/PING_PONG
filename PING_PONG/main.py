@@ -19,6 +19,9 @@ pressedD2 = False
 
 speed = 15
 
+delay = 180
+count = 0
+
 class GameSprite(pg.sprite.Sprite):
     def __init__(self, x, y, file):
         pg.sprite.Sprite.__init__(self)
@@ -100,9 +103,11 @@ while True:
             #speedY += 1
         #if speedY <= limit and speedX < 0:
             #speedY -= 1
-    
-    Ball.rect.x += speedX
-    Ball.rect.y += speedY
+    if count >= delay:
+        Ball.rect.x += speedX
+        Ball.rect.y += speedY
+    else:
+        count += 1
 
     if Ball.rect.y + 30 < 0:
         screen.blit(lose1, (100, H // 2))
