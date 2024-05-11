@@ -20,7 +20,6 @@ pressedD2 = False
 speed = 15
 
 delay = 180
-count = 0
 
 class GameSprite(pg.sprite.Sprite):
     def __init__(self, x, y, file):
@@ -46,6 +45,9 @@ lose2 = font1.render("PLAYER 2 (BOTTOM) IS LOSER!", True, (255, 255, 255))
 finish = False
 
 limit = 10
+
+delay_end = False
+count = 0
 
 while True:
     screen.fill((0, 0, 0))
@@ -103,11 +105,16 @@ while True:
             #speedY += 1
         #if speedY <= limit and speedX < 0:
             #speedY -= 1
+
+    
     if count >= delay:
-        Ball.rect.x += speedX
-        Ball.rect.y += speedY
+        delay_end = True
     else:
         count += 1
+    
+    if delay_end:
+        Ball.rect.x += speedX
+        Ball.rect.y += speedY
 
     if Ball.rect.y + 30 < 0:
         screen.blit(lose1, (100, H // 2))
