@@ -78,22 +78,20 @@ while True:
         player2.rect.x += speed
 
     if Ball.rect.x + 30 >= W:
-        speedX *= -1
-        if speedY > 0 and speedY < limit:
-            speedY *= -1.1
-        elif speedY < 0 and speedY > -limit:
-            speedY *= -1.1
+        if speedX > 0 and speedX < limit:
+            speedX *= -1.1
+        elif speedX < 0 and speedX > -limit:
+            speedX *= -1.1
         else:
-            speedY *= -1
+            speedX *= -1
 
     elif Ball.rect.x <= 0:
-        speedX *= -1
-        if speedY > 0 and speedY < limit:
-            speedY *= -1.1
-        elif speedY < 0 and speedY > -limit:
-            speedY *= -1.1
+        if speedX > 0 and speedX < limit:
+            speedX *= -1.1
+        elif speedX < 0 and speedX > -limit:
+            speedX *= -1.1
         else:
-            speedY *= -1
+            speedX *= -1
 
     if pg.sprite.collide_rect(bot, Ball) or pg.sprite.collide_rect(player2, Ball):
         if speedY > 0 and speedY < limit:
