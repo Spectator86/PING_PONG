@@ -44,7 +44,7 @@ lose2 = font1.render("PLAYER 2 (BOTTOM) IS LOSER!", True, (255, 255, 255))
 
 finish = False
 
-limit = 10
+limit = 40
 
 delay_end = False
 count = 0
@@ -100,7 +100,12 @@ while True:
             speedX -= 1
 
     if pg.sprite.collide_rect(player1, Ball) or pg.sprite.collide_rect(player2, Ball):
-        speedY *= -1
+        if speedY > 0 and speedY < limit:
+            speedY *= -1.1
+        elif speedY < 0 and speedY > -limit:
+            speedY *= -1.1
+        else:
+            speedY *= -1
         #if speedY <= limit and speedX > 0:
             #speedY += 1
         #if speedY <= limit and speedX < 0:
